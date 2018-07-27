@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">Backcheck</string>
+
+    <string name="api_url">https://statsapi.web.nhl.com/api/v1/</string>
+    <string name="select_team">Team:</string>
+</resources>

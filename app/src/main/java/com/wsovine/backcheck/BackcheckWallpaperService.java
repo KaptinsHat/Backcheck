@@ -21,7 +21,6 @@ import java.io.IOException;
 
 
 public class BackcheckWallpaperService extends WallpaperService {
-    public static final String IMAGE_ID = "IMAGE_ID";
     private static final String TAG = "BackcheckWallpaperService";
 
     @Override
@@ -40,7 +39,6 @@ public class BackcheckWallpaperService extends WallpaperService {
     private class MyEngine extends Engine{
 
         private boolean visible = true;
-        private Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
 
         private String logoURL;
         private Bitmap logoBitmap;

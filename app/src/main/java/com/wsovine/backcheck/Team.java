@@ -4,7 +4,7 @@ public class Team {
     private int id = 0;
     private String name = "Error";
     private String abbreviation = "ERR";
-    private int image = R.drawable.hockey_sticks;
+    private String imageURL = "https://imgur.com/9alkqJd.png";
 
     //Constructors
     public Team(int id, String name, String abbreviation){
@@ -30,97 +30,97 @@ public class Team {
     public void setImage() {
         switch (id){
             case 24:
-                image = R.drawable.anaheim_ducks_primary;
+                imageURL = "https://imgur.com/j5YANkX.png";
                 break;
             case 53:
-                image = R.drawable.arizona_coyotes_primary;
+                imageURL = "https://imgur.com/yzlnzGq.png";
                 break;
             case 6:
-                image = R.drawable.boston_bruins_primary;
+                imageURL = "https://imgur.com/HxqfJlL.png";
                 break;
             case 7:
-                image = R.drawable.buffalo_sabres_primary;
+                imageURL = "https://imgur.com/lRk9TD4.png";
                 break;
             case 20:
-                image = R.drawable.calgary_flames_primary;
+                imageURL = "https://imgur.com/glMQFLb.png";
                 break;
             case 12:
-                image = R.drawable.carolina_hurricanes_primary;
+                imageURL = "https://imgur.com/2pBl8mc.png";
                 break;
             case 16:
-                image = R.drawable.chicago_blackhawks_primary;
+                imageURL = "https://imgur.com/nTcGUjd.png";
                 break;
             case 21:
-                image = R.drawable.colorado_avalanche_primary;
+                imageURL = "https://imgur.com/OdbSjBQ.png";
                 break;
             case 29:
-                image = R.drawable.columbus_blue_jacket_primary;
+                imageURL = "https://imgur.com/hFE42Dw.png";
                 break;
             case 25:
-                image = R.drawable.dallas_stars_primary;
+                imageURL = "https://imgur.com/sed5gKW.png";
                 break;
             case 17:
-                image = R.drawable.detroit_red_wings_primary;
+                imageURL = "https://imgur.com/fgWaB4W.png";
                 break;
             case 22:
-                image = R.drawable.edmonton_oilers_primary;
+                imageURL = "https://imgur.com/2leT7Hz.png";
                 break;
             case 13:
-                image = R.drawable.florida_panthers_primary;
+                imageURL = "https://imgur.com/Z19zn7M.png";
                 break;
             case 26:
-                image = R.drawable.los_angeles_kings_primary;
+                imageURL = "https://imgur.com/WMOQjlL.png";
                 break;
             case 30:
-                image = R.drawable.minnesota_wild_primary;
+                imageURL = "https://imgur.com/QTnU9r4.png";
                 break;
             case 8:
-                image = R.drawable.montreal_canadiens_primary;
+                imageURL = "https://imgur.com/UnH9O9E.png";
                 break;
             case 18:
-                image = R.drawable.nashville_predators_primary;
+                imageURL = "https://imgur.com/pbIGykC.png";
                 break;
             case 1:
-                image = R.drawable.new_jersey_devils_primary;
+                imageURL = "https://imgur.com/Oqzy8t7.png";
                 break;
             case 2:
-                image = R.drawable.new_york_islanders_primary;
+                imageURL = "https://imgur.com/U6Dt2F6.png";
                 break;
             case 3:
-                image = R.drawable.new_york_rangers_primary;
+                imageURL = "https://imgur.com/uYu3JKa.png";
                 break;
             case 9:
-                image = R.drawable.ottawa_senators;
+                imageURL = "https://imgur.com/Joadl3a.png";
                 break;
             case 4:
-                image = R.drawable.philadelphia_flyers_primary;
+                imageURL = "https://imgur.com/jRYjXr6.png";
                 break;
             case 5:
-                image = R.drawable.pittsburgh_penguins_primary;
+                imageURL = "https://imgur.com/5Q92H8e.png";
                 break;
             case 28:
-                image = R.drawable.san_jose_sharks_primary;
+                imageURL = "https://imgur.com/Sg7QNN9.png";
                 break;
             case 19:
-                image = R.drawable.st_louis_blues_primary;
+                imageURL = "https://imgur.com/cgPorBN.png";
                 break;
             case 14:
-                image = R.drawable.tampa_bay_lightning;
+                imageURL = "https://imgur.com/YKUU9MA.png";
                 break;
             case 10:
-                image = R.drawable.toronto_maple_leafs_primary;
+                imageURL = "https://imgur.com/tTq2XuG.png";
                 break;
             case 23:
-                image = R.drawable.vancouver_canucks_primary;
+                imageURL = "https://imgur.com/Yx011CV.png";
                 break;
             case 54:
-                image = R.drawable.vegas_golden_knights_primary;
+                imageURL = "https://imgur.com/qZSHbPG.png";
                 break;
             case 15:
-                image = R.drawable.washington_capitals_primary;
+                imageURL = "https://imgur.com/eIi6lGB.png";
                 break;
             case 52:
-                image = R.drawable.winnipeg_jets_primary;
+                imageURL = "https://imgur.com/TB1snGy.png";
                 break;
         }
     }
@@ -138,8 +138,8 @@ public class Team {
         return abbreviation;
     }
 
-    public int getImage() {
-        return image;
+    public String getImageURL() {
+        return imageURL;
     }
 
     @Override

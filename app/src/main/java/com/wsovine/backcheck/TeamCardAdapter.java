@@ -52,7 +52,7 @@ public class TeamCardAdapter extends RecyclerView.Adapter<TeamCardAdapter.ViewHo
         CardView cardView = holder.cardView;
 
         ImageView imageView = (ImageView) cardView.findViewById(R.id.team_image);
-        Picasso.get().load(teamList.get(position).getImage()).into(imageView);
+        Picasso.get().load(teamList.get(position).getImageURL()).into(imageView);
         imageView.setContentDescription(teamList.get(position).getName());
 
         TextView textView = (TextView) cardView.findViewById(R.id.team_text);

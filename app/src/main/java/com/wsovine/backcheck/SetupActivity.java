@@ -1,9 +1,15 @@
 package com.wsovine.backcheck;
 
+import android.app.IntentService;
 import android.app.WallpaperManager;
+import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
+import android.service.wallpaper.WallpaperService;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -95,7 +101,12 @@ public class SetupActivity extends AppCompatActivity {
                     teamCardAdapter.setListener(new TeamCardAdapter.Listener() {
                         @Override
                         public void onClick(int position) {
-                            setTeamWallpaper(position);
+                            Log.d(TAG, "Team: " + teamList.get(position).toString() + " selected");
+                            SharedPreferences.Editor editor = getSharedPreferences(Constants.PREFS, MODE_PRIVATE).edit();
+                            editor.putInt(Constants.TEAM_ID, teamList.get(position).getId());
+                            editor.putString(Constants.IMAGE_URL, teamList.get(position).getImageURL());
+                            editor.apply();
+                            setTeamWallpaper();
                         }
                     });
 
@@ -126,52 +137,11 @@ public class SetupActivity extends AppCompatActivity {
         queue.add(request);
     }
 
-    private void setTeamWallpaper(int position){
-        Team team = teamList.get(position);
-        new SetWallpaperTask().execute(team.getImage());
-    }
-
-    private int getScreenHeight(){
-        DisplayMetrics displayMetrics = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-        return displayMetrics.heightPixels;
-    }
-
-    private int getScreenWidth(){
-        DisplayMetrics displayMetrics = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-        return displayMetrics.widthPixels;
-    }
-
-
-    class SetWallpaperTask extends AsyncTask<Integer, Void, Boolean>{
-
-        @Override
-        protected Boolean doInBackground(Integer... integers) {
-            try {
-                Bitmap bitmap = Picasso.get()
-                        .load(integers[0])
-                        .resize(getScreenWidth()/4, getScreenHeight())
-                        .centerInside()
-                        .get();
-                WallpaperManager wallpaperManager =
-                        (WallpaperManager) getApplicationContext().getSystemService(Context.WALLPAPER_SERVICE);
-                wallpaperManager.setBitmap(bitmap);
-                return true;
-            } catch (IOException e) {
-                e.printStackTrace();
-                return false;
-            }
-        }
-
-        @Override
-        protected void onPostExecute(Boolean result){
-            if (!result){
-                Toast.makeText(getApplicationContext(), "Unable to set wallpaper", Toast.LENGTH_SHORT).show();
-            } else {
-                Toast.makeText(getApplicationContext(), "Wallpaper updated", Toast.LENGTH_SHORT).show();
-            }
-        }
+    private void setTeamWallpaper(){
+        Log.d(TAG, "setTeamWallpaper: running");
+        Intent intent = new Intent(WallpaperManager.ACTION_CHANGE_LIVE_WALLPAPER);
+        intent.putExtra(WallpaperManager.EXTRA_LIVE_WALLPAPER_COMPONENT, new ComponentName(this, BackcheckWallpaperService.class));
+        startActivity(intent);
     }
 
 }

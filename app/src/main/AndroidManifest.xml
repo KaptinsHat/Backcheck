@@ -27,10 +27,9 @@
 
         <service
             android:name=".BackcheckWallpaperService"
-            android:label="Backcheck Wallpaper"
             android:permission="android.permission.BIND_WALLPAPER">
             <intent-filter>
-                <action android:name="android.service.wallpaper.BackcheckWallpaperService"/>
+                <action android:name="android.service.wallpaper.WallpaperService"/>
             </intent-filter>
             <meta-data
                 android:name="android.service.wallpaper"

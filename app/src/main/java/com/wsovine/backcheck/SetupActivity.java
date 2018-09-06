@@ -62,14 +62,13 @@ public class SetupActivity extends AppCompatActivity {
     private void setTeamNamesSelection(){
         RequestQueue queue = Volley.newRequestQueue(this);
         String url = getString(R.string.api_url) + "teams";
+        Log.d(TAG, url);
 
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 //remove the progress bar
                 progressBar.setVisibility(View.GONE);
-
-                Log.d(TAG, "onResponse: " + response.toString());
 
                 try {
                     //get the teams from the response, create the java object, and add them to the ArrayList

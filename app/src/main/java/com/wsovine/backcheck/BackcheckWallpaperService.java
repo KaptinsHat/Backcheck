@@ -30,6 +30,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -71,6 +72,7 @@ public class BackcheckWallpaperService extends WallpaperService {
 
         // Settings variables
         SharedPreferences preferences;
+        int teamID;
 
         // Text variables
         Game game = new Game();
@@ -83,7 +85,7 @@ public class BackcheckWallpaperService extends WallpaperService {
 
             //set the text color, font, etc
             textPaint.setColor(Color.WHITE);
-            textPaint.setTextSize(100);
+            textPaint.setTextSize(50);
             textPaint.setTextAlign(Paint.Align.CENTER);
         }
 
@@ -139,7 +141,26 @@ public class BackcheckWallpaperService extends WallpaperService {
                     c.drawBitmap(logoBitmap, bitmapHorizontalCenterPlacement, bitmapVerticalCenterPlacement, null);
 
                     //draw the text
-                    c.drawText(game.getGameDateString(), width/2, bitmapVerticalCenterPlacement - 50, textPaint);
+                    String text;
+                    // text if the game is in the future
+                    if(game.getGameDate().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli() > System.currentTimeMillis()){
+                        //line 1
+                        text = "Next game:";
+                        c.drawText(text, width/2, bitmapVerticalCenterPlacement - textPaint.getTextSize() * 3, textPaint);
+                        //line 2
+                        text = game.getGameDateString();
+                        c.drawText(text, width/2, bitmapVerticalCenterPlacement - textPaint.getTextSize() * 2, textPaint);
+                        //line 3
+                        if(teamID == game.getHomeTeamID()){
+                            text = "vs " + game.getAwayTeamName();
+                        } else {
+                            text = "@ " + game.getHomeTeamName();
+                        }
+                        c.drawText(text, width/2, bitmapVerticalCenterPlacement - textPaint.getTextSize(), textPaint);
+                    } else {
+                        //TODO: set text to show when the game is in play
+                    }
+
                 }
             } finally {
                 if (c != null) {
@@ -152,7 +173,7 @@ public class BackcheckWallpaperService extends WallpaperService {
 
         private void updateGame(){
             //Create a game object to store all of the game details
-            int teamID = preferences.getInt(Constants.TEAM_ID, 0);
+            teamID = preferences.getInt(Constants.TEAM_ID, 0);
 
             String url = getString(R.string.api_url)
                     + "teams/" + teamID
@@ -176,7 +197,7 @@ public class BackcheckWallpaperService extends WallpaperService {
                         //Store the game primary key
                         game.setGamePk(nextGameJson.getInt("gamePk"));
                         //Store the game date
-                        game.setGameDateString(nextGameJson.getString("gameDate"));
+                        game.setGameDate(nextGameJson.getString("gameDate"));
                         //Store the team IDs
                         game.setAwayTeamID(nextGameJson
                                 .getJSONObject("teams")

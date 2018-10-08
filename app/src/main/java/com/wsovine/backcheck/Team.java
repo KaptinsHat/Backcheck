@@ -1,6 +1,23 @@
 package com.wsovine.backcheck;
 
+import android.content.Context;
+import android.util.Log;
+
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+
 public class Team {
+    private static final String TAG = "Team";
+
     private int id = 0;
     private String name = "Error";
     private String abbreviation = "ERR";
@@ -12,6 +29,40 @@ public class Team {
         setName(name);
         setAbbreviation(abbreviation);
         setImage();
+    }
+
+    public Team(int id, final Context context){
+        setId(id);
+        setImage();
+
+        RequestQueue queue = Volley.newRequestQueue(context);
+        String url = context.getString(R.string.api_url) + "teams/" + id;
+        Log.d(TAG, url);
+
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                //remove the progress bar
+
+                try {
+                    JSONArray jsonTeamArray = response.getJSONArray("teams");
+                    JSONObject jsonTeam = jsonTeamArray.getJSONObject(0);
+                    setName(jsonTeam.getString("name"));
+                    setAbbreviation(jsonTeam.getString("abbreviation"));
+
+                } catch (JSONException e) {
+                    Log.d(TAG, "onResponse: unable to find 'teams' array within json response");
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener(){
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d(TAG, "onErrorResponse: " + error.getMessage());
+            }
+        });
+
+        queue.add(request);
     }
 
     //SET METHODS

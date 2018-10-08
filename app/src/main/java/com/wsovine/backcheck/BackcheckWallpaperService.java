@@ -73,6 +73,7 @@ public class BackcheckWallpaperService extends WallpaperService {
         // Settings variables
         SharedPreferences preferences;
         int teamID;
+        Team team;
 
         // Text variables
         Game game = new Game();
@@ -83,6 +84,7 @@ public class BackcheckWallpaperService extends WallpaperService {
             super.onCreate(surfaceHolder);
             preferences = getSharedPreferences(Constants.PREFS, MODE_PRIVATE);
 
+
             //set the text color, font, etc
             textPaint.setColor(Color.WHITE);
             textPaint.setTextSize(50);
@@ -92,10 +94,9 @@ public class BackcheckWallpaperService extends WallpaperService {
         @Override
         public void onVisibilityChanged(boolean visible) {
             super.onVisibilityChanged(visible);
-            updateGame();
             this.visible = visible;
             if (visible){
-                refreshImageAndDrawFrame();
+                refreshAndDrawFrame();
             }
         }
 
@@ -105,7 +106,7 @@ public class BackcheckWallpaperService extends WallpaperService {
             Log.i(TAG, "onSurfaceChanged: Height = " + Integer.toString(height) + " Width = " + Integer.toString(width));
             this.height = height;
             this.width = width;
-            refreshImageAndDrawFrame();
+            refreshAndDrawFrame();
         }
 
         @Override
@@ -119,7 +120,12 @@ public class BackcheckWallpaperService extends WallpaperService {
             this.visible = false;
         }
 
-        private void refreshImageAndDrawFrame(){
+        private void refreshAndDrawFrame(){
+            if(teamID != preferences.getInt(Constants.TEAM_ID, 0)) {
+                teamID = preferences.getInt(Constants.TEAM_ID, 0);
+                team = new Team(teamID, getApplicationContext());
+            }
+            updateGameLink();
             new RefreshImageTask().execute();
         }
 
@@ -145,7 +151,7 @@ public class BackcheckWallpaperService extends WallpaperService {
                     // text if the game is in the future
                     if(game.getGameDate().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli() > System.currentTimeMillis()){
                         //line 1
-                        text = "Next game:";
+                        text = team.getName() +" next game:";
                         c.drawText(text, width/2, bitmapVerticalCenterPlacement - textPaint.getTextSize() * 3, textPaint);
                         //line 2
                         text = game.getGameDateString();
@@ -158,7 +164,10 @@ public class BackcheckWallpaperService extends WallpaperService {
                         }
                         c.drawText(text, width/2, bitmapVerticalCenterPlacement - textPaint.getTextSize(), textPaint);
                     } else {
-                        //TODO: set text to show when the game is in play
+                        //line 1
+                        text = game.getAwayTeamTriCode() + " " + game.getAwayTeamScore() +
+                                " | " + game.getHomeTeamTriCode() + " " + game.getHomeTeamScore();
+                        c.drawText(text, width/2, bitmapVerticalCenterPlacement - textPaint.getTextSize(), textPaint);
                     }
 
                 }
@@ -171,64 +180,115 @@ public class BackcheckWallpaperService extends WallpaperService {
 
 
 
-        private void updateGame(){
-            //Create a game object to store all of the game details
-            teamID = preferences.getInt(Constants.TEAM_ID, 0);
+        private void updateGameLink(){
+            if(game.getLiveLink() == null) {
+                String url = getString(R.string.api_url)
+                        + "teams/" + teamID
+                        + "?expand=team.schedule.next";
+                Log.d(TAG, "Next Game: " + url);
 
-            String url = getString(R.string.api_url)
-                    + "teams/" + teamID
-                    +"?expand=team.schedule.next";
-            Log.d(TAG, "JSONURL: " + url);
+                JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            JSONObject nextGameJson = response
+                                    .getJSONArray("teams")
+                                    .getJSONObject(0)
+                                    .getJSONObject("nextGameSchedule")
+                                    .getJSONArray("dates")
+                                    .getJSONObject(0)
+                                    .getJSONArray("games")
+                                    .getJSONObject(0);
+
+
+                            //Store the game primary key
+                            game.setGamePk(nextGameJson.getInt("gamePk"));
+                            //Store the live link
+                            game.setLiveLink(nextGameJson.getString("link"));
+
+                            storeGameData();
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+
+                    }
+                });
+
+                RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
+                queue.add(request);
+
+            } else {
+                storeGameData();
+            }
+        }
+
+        private void storeGameData(){
+            String url = getString(R.string.short_api_url)
+                    + game.getLiveLink();
+            Log.d(TAG, "Live Link: " + url);
 
             JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
                 @Override
                 public void onResponse(JSONObject response) {
                     try {
-                        JSONObject nextGameJson = response
-                                .getJSONArray("teams")
-                                .getJSONObject(0)
-                                .getJSONObject("nextGameSchedule")
-                                .getJSONArray("dates")
-                                .getJSONObject(0)
-                                .getJSONArray("games")
-                                .getJSONObject(0);
-
-
-                        //Store the game primary key
-                        game.setGamePk(nextGameJson.getInt("gamePk"));
+                        JSONObject gameData = response
+                                .getJSONObject("gameData");
                         //Store the game date
-                        game.setGameDate(nextGameJson.getString("gameDate"));
+                        game.setGameDate(gameData
+                                .getJSONObject("datetime")
+                                .getString("dateTime"));
+                        Log.d(TAG, "gameDate: " + game.getGameDate());
                         //Store the team IDs
-                        game.setAwayTeamID(nextGameJson
+                        game.setAwayTeamID(gameData
                                 .getJSONObject("teams")
                                 .getJSONObject("away")
-                                .getJSONObject("team")
                                 .getInt("id"));
-                        game.setHomeTeamID(nextGameJson
+                        Log.d(TAG, "awayTeamID: " + game.getAwayTeamID());
+                        game.setHomeTeamID(gameData
                                 .getJSONObject("teams")
                                 .getJSONObject("home")
-                                .getJSONObject("team")
                                 .getInt("id"));
                         //Store the team names
-                        game.setAwayTeamName(nextGameJson
+                        game.setAwayTeamName(gameData
+                                .getJSONObject("teams")
+                                .getJSONObject("away")
+                                .getString("name"));
+                        game.setHomeTeamName(gameData
+                                .getJSONObject("teams")
+                                .getJSONObject("home")
+                                .getString("name"));
+
+                        JSONObject liveData = response
+                                .getJSONObject("liveData");
+                        //Store the triCode for each team
+                        game.setAwayTeamTriCode(liveData
                                 .getJSONObject("teams")
                                 .getJSONObject("away")
                                 .getJSONObject("team")
-                                .getString("name"));
-                        game.setHomeTeamName(nextGameJson
+                                .getString("triCode"));
+                        game.setHomeTeamTriCode(liveData
                                 .getJSONObject("teams")
                                 .getJSONObject("home")
                                 .getJSONObject("team")
-                                .getString("name"));
+                                .getString("triCode"));
                         //Store the scores for each team
-                        game.setAwayTeamScore(nextGameJson
+                        game.setAwayTeamScore(liveData
+                                .getJSONObject("linescore")
                                 .getJSONObject("teams")
                                 .getJSONObject("away")
-                                .getInt("score"));
-                        game.setHomeTeamScore(nextGameJson
+                                .getInt("goals"));
+                        game.setHomeTeamScore(liveData
+                                .getJSONObject("linescore")
                                 .getJSONObject("teams")
                                 .getJSONObject("home")
-                                .getInt("score"));
+                                .getInt("goals"));
+
+                        refreshAndDrawFrame();
 
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -243,7 +303,9 @@ public class BackcheckWallpaperService extends WallpaperService {
 
             RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
             queue.add(request);
+
         }
+
 
 
 
@@ -256,7 +318,7 @@ public class BackcheckWallpaperService extends WallpaperService {
         private class RefreshImageTask extends AsyncTask<Void, Void, Boolean>{
             @Override
             protected void onPreExecute(){
-                updateGame();
+
             }
 
             @Override

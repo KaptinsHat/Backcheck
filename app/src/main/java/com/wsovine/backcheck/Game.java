@@ -18,14 +18,17 @@ public class Game {
     private static final String TAG = "GAME";
 
     private int gamePk = 0;
+    private String liveLink;
     private LocalDateTime gameDate = LocalDateTime.now();
-    private String gameDateString = "None";
+    private String gameDateString = "Game Date";
     private int awayTeamID = 0;
-    private String awayTeamName = "None";
+    private String awayTeamName = "Away Team";
     private int homeTeamID = 0;
-    private String homeTeamName = "None";
+    private String homeTeamName = "Home Team";
     private int awayTeamScore = -1;
     private int homeTeamScore = -1;
+    private String awayTeamTriCode = "AWY";
+    private String homeTeamTriCode = "HOM";
 
     public int getGamePk() {
         return gamePk;
@@ -111,5 +114,29 @@ public class Game {
 
     public void setHomeTeamName(String homeTeamName) {
         this.homeTeamName = homeTeamName;
+    }
+
+    public String getLiveLink() {
+        return liveLink;
+    }
+
+    public void setLiveLink(String liveLink) {
+        this.liveLink = liveLink;
+    }
+
+    public String getAwayTeamTriCode() {
+        return awayTeamTriCode;
+    }
+
+    public void setAwayTeamTriCode(String awayTeamTriCode) {
+        this.awayTeamTriCode = awayTeamTriCode;
+    }
+
+    public String getHomeTeamTriCode() {
+        return homeTeamTriCode;
+    }
+
+    public void setHomeTeamTriCode(String homeTeamTriCode) {
+        this.homeTeamTriCode = homeTeamTriCode;
     }
 }

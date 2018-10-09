@@ -53,10 +53,6 @@ public class BackcheckWallpaperService extends WallpaperService {
 
 
 
-
-
-
-
     //-------------------------------- INNER CLASSES---------------------------------
     private class MyEngine extends Engine{
 
@@ -76,7 +72,7 @@ public class BackcheckWallpaperService extends WallpaperService {
         Team team;
 
         // Text variables
-        Game game = new Game();
+        Game game;
         Paint textPaint = new Paint();
 
         @Override
@@ -84,12 +80,12 @@ public class BackcheckWallpaperService extends WallpaperService {
             super.onCreate(surfaceHolder);
             preferences = getSharedPreferences(Constants.PREFS, MODE_PRIVATE);
 
-
             //set the text color, font, etc
             textPaint.setColor(Color.WHITE);
             textPaint.setTextSize(50);
             textPaint.setTextAlign(Paint.Align.CENTER);
         }
+
 
         @Override
         public void onVisibilityChanged(boolean visible) {
@@ -112,6 +108,7 @@ public class BackcheckWallpaperService extends WallpaperService {
         @Override
         public void onSurfaceCreated(SurfaceHolder holder) {
             super.onSurfaceCreated(holder);
+            refreshAndDrawFrame();
         }
 
         @Override
@@ -124,6 +121,7 @@ public class BackcheckWallpaperService extends WallpaperService {
             if(teamID != preferences.getInt(Constants.TEAM_ID, 0)) {
                 teamID = preferences.getInt(Constants.TEAM_ID, 0);
                 team = new Team(teamID, getApplicationContext());
+                game = null;
             }
             updateGameLink();
             new RefreshImageTask().execute();
@@ -181,7 +179,8 @@ public class BackcheckWallpaperService extends WallpaperService {
 
 
         private void updateGameLink(){
-            if(game.getLiveLink() == null) {
+            if(game == null) {
+                game = new Game();
                 String url = getString(R.string.api_url)
                         + "teams/" + teamID
                         + "?expand=team.schedule.next";
@@ -215,15 +214,13 @@ public class BackcheckWallpaperService extends WallpaperService {
                 }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-
+                        error.printStackTrace();
                     }
                 });
 
                 RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
                 queue.add(request);
 
-            } else {
-                storeGameData();
             }
         }
 
@@ -242,13 +239,11 @@ public class BackcheckWallpaperService extends WallpaperService {
                         game.setGameDate(gameData
                                 .getJSONObject("datetime")
                                 .getString("dateTime"));
-                        Log.d(TAG, "gameDate: " + game.getGameDate());
                         //Store the team IDs
                         game.setAwayTeamID(gameData
                                 .getJSONObject("teams")
                                 .getJSONObject("away")
                                 .getInt("id"));
-                        Log.d(TAG, "awayTeamID: " + game.getAwayTeamID());
                         game.setHomeTeamID(gameData
                                 .getJSONObject("teams")
                                 .getJSONObject("home")
@@ -267,11 +262,13 @@ public class BackcheckWallpaperService extends WallpaperService {
                                 .getJSONObject("liveData");
                         //Store the triCode for each team
                         game.setAwayTeamTriCode(liveData
+                                .getJSONObject("linescore")
                                 .getJSONObject("teams")
                                 .getJSONObject("away")
                                 .getJSONObject("team")
                                 .getString("triCode"));
                         game.setHomeTeamTriCode(liveData
+                                .getJSONObject("linescore")
                                 .getJSONObject("teams")
                                 .getJSONObject("home")
                                 .getJSONObject("team")
@@ -287,8 +284,6 @@ public class BackcheckWallpaperService extends WallpaperService {
                                 .getJSONObject("teams")
                                 .getJSONObject("home")
                                 .getInt("goals"));
-
-                        refreshAndDrawFrame();
 
                     } catch (JSONException e) {
                         e.printStackTrace();

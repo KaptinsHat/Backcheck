@@ -51,16 +51,6 @@ public class Game {
         gameDate = gameDate.atZone(ZoneId.of("GMT"))
                 .withZoneSameInstant(ZoneId.systemDefault())
                 .toLocalDateTime();
-
-        //DEBUG TESTING
-        LocalDateTime currentLocalDateTime = LocalDateTime.now();
-        long currentTimeInMillis = System.currentTimeMillis();
-        Log.d(TAG, "currentLocalDateTime outputFormatter: " + outputFormatter.format(currentLocalDateTime));
-        Log.d(TAG, "currentLocalDateTime in millis: " + currentLocalDateTime.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli());
-        Log.d(TAG, "currentTimeInMillis: " + currentTimeInMillis);
-
-
-        //END DEBUG TESTING
         this.gameDateString = outputFormatter.format(gameDate);
     }
 

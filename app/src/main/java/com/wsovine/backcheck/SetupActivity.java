@@ -97,9 +97,6 @@ public class SetupActivity extends AppCompatActivity {
                     TeamCardAdapter teamCardAdapter = new TeamCardAdapter(teamList);
 
                     //Set what happens when we click an item (team card)
-                    //TODO: rather than set the preferences, this should pass the team ID in the intent
-                    // problem with doing it this way is that it changes the wallpaper prior to the user
-                    // actually clicking on "Set Wallpaper"
                     teamCardAdapter.setListener(new TeamCardAdapter.Listener() {
                         @Override
                         public void onClick(int position) {

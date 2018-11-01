@@ -25,10 +25,12 @@ public class Game {
     private String awayTeamName = "Away Team";
     private int homeTeamID = 0;
     private String homeTeamName = "Home Team";
-    private int awayTeamScore = -1;
-    private int homeTeamScore = -1;
+    private int awayTeamScore = 0;
+    private int homeTeamScore = 0;
     private String awayTeamTriCode = "AWY";
     private String homeTeamTriCode = "HOM";
+    private String currentPeriodOrdinal = "prd";
+    private String currentPeriodTimeRemaining = "00:00";
 
     public int getGamePk() {
         return gamePk;
@@ -128,5 +130,21 @@ public class Game {
 
     public void setHomeTeamTriCode(String homeTeamTriCode) {
         this.homeTeamTriCode = homeTeamTriCode;
+    }
+
+    public String getCurrentPeriodOrdinal() {
+        return currentPeriodOrdinal;
+    }
+
+    public void setCurrentPeriodOrdinal(String currentPeriodOrdinal) {
+        this.currentPeriodOrdinal = currentPeriodOrdinal;
+    }
+
+    public String getCurrentPeriodTimeRemaining() {
+        return currentPeriodTimeRemaining;
+    }
+
+    public void setCurrentPeriodTimeRemaining(String currentPeriodTimeRemaining) {
+        this.currentPeriodTimeRemaining = currentPeriodTimeRemaining;
     }
 }

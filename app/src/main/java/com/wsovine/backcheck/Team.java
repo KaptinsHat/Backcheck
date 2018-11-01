@@ -80,98 +80,98 @@ public class Team {
 
     public void setImage() {
         switch (id){
-            case 24:
-                imageURL = "https://imgur.com/j5YANkX.png";
+            case 24: //Anaheim Ducks
+                imageURL = "https://imgur.com/r8U3C27.png";
                 break;
-            case 53:
-                imageURL = "https://imgur.com/yzlnzGq.png";
+            case 53: //Arizona Coyotes
+                imageURL = "https://imgur.com/M1EWVel.png";
                 break;
-            case 6:
-                imageURL = "https://imgur.com/HxqfJlL.png";
+            case 6: //Boston Bruins
+                imageURL = "https://imgur.com/bZAWzyP.png";
                 break;
-            case 7:
-                imageURL = "https://imgur.com/lRk9TD4.png";
+            case 7: //Buffalo Sabres
+                imageURL = "https://imgur.com/sMZE7qB.png";
                 break;
-            case 20:
-                imageURL = "https://imgur.com/glMQFLb.png";
+            case 20: //Calgary Flames
+                imageURL = "https://imgur.com/ujoajbs.png";
                 break;
-            case 12:
-                imageURL = "https://imgur.com/2pBl8mc.png";
+            case 12: //Carolina Hurricanes
+                imageURL = "https://imgur.com/TL8X8ZV.png";
                 break;
-            case 16:
-                imageURL = "https://imgur.com/nTcGUjd.png";
+            case 16: //Chicago Blackhawks
+                imageURL = "https://imgur.com/9LD0yH7.png";
                 break;
-            case 21:
-                imageURL = "https://imgur.com/OdbSjBQ.png";
+            case 21:  //Colorado Avalanche
+                imageURL = "https://imgur.com/HiXGurD.png";
                 break;
-            case 29:
-                imageURL = "https://imgur.com/hFE42Dw.png";
+            case 29: //Columbus Blue Jackets
+                imageURL = "https://imgur.com/HV54zth.png";
                 break;
-            case 25:
-                imageURL = "https://imgur.com/sed5gKW.png";
+            case 25: //Dallas Stars
+                imageURL = "https://imgur.com/ShnqjZQ.png";
                 break;
-            case 17:
-                imageURL = "https://imgur.com/fgWaB4W.png";
+            case 17: //Detroit Red Wings
+                imageURL = "https://imgur.com/9vnU40U.png";
                 break;
-            case 22:
-                imageURL = "https://imgur.com/2leT7Hz.png";
+            case 22: //Edmonton Oilers
+                imageURL = "https://imgur.com/KPpbJhX.png";
                 break;
-            case 13:
-                imageURL = "https://imgur.com/Z19zn7M.png";
+            case 13: //Florida Panthers
+                imageURL = "https://imgur.com/kQOtH9I.png";
                 break;
-            case 26:
-                imageURL = "https://imgur.com/WMOQjlL.png";
+            case 26: //Los Angeles Kings
+                imageURL = "https://imgur.com/jR8IRSC.png";
                 break;
-            case 30:
-                imageURL = "https://imgur.com/QTnU9r4.png";
+            case 30: //Minnesota Wild
+                imageURL = "https://imgur.com/O4wynF2.png";
                 break;
-            case 8:
-                imageURL = "https://imgur.com/UnH9O9E.png";
+            case 8: //Montreal Canadians
+                imageURL = "https://imgur.com/KvaHPPw.png";
                 break;
-            case 18:
-                imageURL = "https://imgur.com/pbIGykC.png";
+            case 18: //Nashville Predators
+                imageURL = "https://imgur.com/ou7ZzeG.png";
                 break;
-            case 1:
-                imageURL = "https://imgur.com/Oqzy8t7.png";
+            case 1: //New Jersey Devils
+                imageURL = "https://imgur.com/X3VTvec.png";
                 break;
-            case 2:
-                imageURL = "https://imgur.com/U6Dt2F6.png";
+            case 2: //New York Islanders
+                imageURL = "https://imgur.com/eODeDFJ.png";
                 break;
-            case 3:
-                imageURL = "https://imgur.com/uYu3JKa.png";
+            case 3: //New York Rangers
+                imageURL = "https://imgur.com/64vI2YE.png";
                 break;
-            case 9:
-                imageURL = "https://imgur.com/Joadl3a.png";
+            case 9: //Ottawa Senators
+                imageURL = "https://imgur.com/kXww0sF.png";
                 break;
-            case 4:
-                imageURL = "https://imgur.com/jRYjXr6.png";
+            case 4: //Philadelphia Flyers
+                imageURL = "https://https://imgur.com/Wrltrcc.png";
                 break;
-            case 5:
-                imageURL = "https://imgur.com/5Q92H8e.png";
+            case 5: //Pittsburgh Penguins
+                imageURL = "https://imgur.com/GYysxQw.png";
                 break;
-            case 28:
-                imageURL = "https://imgur.com/Sg7QNN9.png";
+            case 28: //San Jose Sharks
+                imageURL = "https://imgur.com/wOqJcUF.png";
                 break;
-            case 19:
-                imageURL = "https://imgur.com/cgPorBN.png";
+            case 19: //St. Louis Blues
+                imageURL = "https://imgur.com/vQReLim.png";
                 break;
-            case 14:
-                imageURL = "https://imgur.com/YKUU9MA.png";
+            case 14: //Tampa Bay Lightning
+                imageURL = "https://imgur.com/UQx2zn3.png";
                 break;
-            case 10:
-                imageURL = "https://imgur.com/tTq2XuG.png";
+            case 10: //Toronto Maple Leafs
+                imageURL = "https://imgur.com/qPlAOpu.png";
                 break;
-            case 23:
-                imageURL = "https://imgur.com/Yx011CV.png";
+            case 23: //Vancouver Canucks
+                imageURL = "https://imgur.com/wxysRFK.png";
                 break;
-            case 54:
-                imageURL = "https://imgur.com/qZSHbPG.png";
+            case 54: //Vegas Golden Knights
+                imageURL = "https://imgur.com/h9SY0zZ.png";
                 break;
-            case 15:
-                imageURL = "https://imgur.com/eIi6lGB.png";
+            case 15: //Washington Capitals
+                imageURL = "https://imgur.com/MFsWGNn.png";
                 break;
-            case 52:
-                imageURL = "https://imgur.com/TB1snGy.png";
+            case 52: //Winnipeg Jets
+                imageURL = "https://imgur.com/o2K4CNl.png";
                 break;
         }
     }

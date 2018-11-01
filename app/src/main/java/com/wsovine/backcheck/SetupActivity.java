@@ -46,8 +46,6 @@ public class SetupActivity extends AppCompatActivity {
     //Team names
     ArrayList<Team> teamList = new ArrayList<Team>();
 
-    //SCREEN / WALLPAPER VARIABLES
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

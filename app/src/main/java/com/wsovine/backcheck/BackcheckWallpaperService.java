@@ -79,6 +79,7 @@ public class BackcheckWallpaperService extends WallpaperService {
         boolean gameInProgress = false;
         Paint textPaint = new Paint();
 
+
         @Override
         public void onCreate(SurfaceHolder surfaceHolder) {
             super.onCreate(surfaceHolder);
@@ -198,7 +199,7 @@ public class BackcheckWallpaperService extends WallpaperService {
                 if (c != null) {
                     holder.unlockCanvasAndPost(c);
                 }
-                // if the game is in progress then update every x milliseconds
+                // if the game is in progress then update every 5000 milliseconds (5 seconds)
                 if(gameInProgress) {
                     final Handler handler = new Handler();
                     handler.postDelayed(new Runnable() {
@@ -207,6 +208,7 @@ public class BackcheckWallpaperService extends WallpaperService {
                             refreshAndDrawFrame();
                         }
                     }, 5000);
+                // game is not in progress, switch between next game and previous game every 10000 milliseconds (10 seconds)
                 }else if(frame==0){
                     final Handler handler = new Handler();
                     handler.postDelayed(new Runnable() {
@@ -214,7 +216,7 @@ public class BackcheckWallpaperService extends WallpaperService {
                         public void run() {
                             drawFrame(1);
                         }
-                    }, 10000);
+                    }, 5000);
                 }else{
                     final Handler handler = new Handler();
                     handler.postDelayed(new Runnable() {
@@ -222,13 +224,13 @@ public class BackcheckWallpaperService extends WallpaperService {
                         public void run() {
                             refreshAndDrawFrame();
                         }
-                    }, 10000);
+                    }, 5000);
                 }
             }
         }
 
 
-
+        // updates the link in our game objects that we get information from using @storeCurrentGameData and @storePreviousGameData
         private void updateGameLink(){
             if(currentGame == null) {
                 currentGame = new Game();
@@ -273,7 +275,7 @@ public class BackcheckWallpaperService extends WallpaperService {
             RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
             queue.add(requestCurrent);
 
-            if(!gameInProgress && lastGame == null) {
+            if(!gameInProgress) {
                 lastGame = new Game();
                 String urlPrevious = getString(R.string.api_url)
                         + "teams/" + teamID
@@ -316,6 +318,7 @@ public class BackcheckWallpaperService extends WallpaperService {
             }
         }
 
+        // pulls information from the current game (i.e. upcoming game or in progress game if there is a game going on)
         private void storeCurrentGameData(){
             String url = getString(R.string.short_api_url)
                     + currentGame.getLiveLink();
@@ -398,6 +401,7 @@ public class BackcheckWallpaperService extends WallpaperService {
             queue.add(request);
         }
 
+        // pulls information into the game object for the last game
         private void storePreviousGameData(){
             String url = getString(R.string.short_api_url)
                     + lastGame.getLiveLink();

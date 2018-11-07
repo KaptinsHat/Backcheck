@@ -516,7 +516,7 @@ public class BackcheckWallpaperService extends WallpaperService {
             @Override
             protected void onPostExecute(Boolean result) {
                 if(!result){
-                    Toast.makeText(BackcheckWallpaperService.this, "Unable to load image", Toast.LENGTH_SHORT).show();
+                    Log.i(TAG, "Unable to load image");
                 } else {
                     drawFrame(0);
                 }
